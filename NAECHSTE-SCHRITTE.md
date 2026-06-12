@@ -1,33 +1,34 @@
-# Nächste Schritte vor Live-Gang (Stand 12.06.2026)
+# Status & letzter Schritt vor Live-Gang (Stand 12.06.2026, nachmittags)
 
-Code liegt auf GitHub: https://github.com/ben69mikail/ZAubererLIAR
-Der Auto-Deploy-Workflow läuft bei jedem Push — **schlägt aber fehl, bis die 4 Secrets gesetzt sind** (Punkt 1).
+## ✅ Erledigt
+- **Design v2 „Salon Parisien"** live im Repo: helles französisches Editorial (Elfenbein/Tinte/Champagner-Gold), Playfair Display + Inter, dunkle Bühnen-Panels für Hero/Finale, warme kinderfreundliche Kinderzauberer-Seite (SVG-Icons statt Emojis)
+- **GitHub**: https://github.com/ben69mikail/ZAubererLIAR — alle Commits gepusht
+- **GA4**: neue Property „zauberer-liar.de" (Konto wie liar-entertainer.com), Web-Stream `https://www.zauberer-liar.de`, Stream-ID 15062943714, **Mess-ID `G-ERW1J6LF5D`** — bereits in `site/assets/app.js` eingetragen (lädt nur nach Cookie-Zustimmung)
+- **GSC**: Domain-Property zauberer-liar.de existierte bereits (gleiches Konto). Neue Sitemap `https://zauberer-liar.de/sitemap.xml` eingereicht — Status wird „Erfolgreich", sobald die neue Seite deployed ist
+- Hinweis: Auf der alten WordPress-Seite läuft noch ein Site-Kit-Tag (G-08W3WX75ST) — verschwindet automatisch mit dem Relaunch
 
-## 1. IONOS-Secrets in GitHub setzen (Pflicht für Deploy)
-Repo → **Settings → Secrets and variables → Actions → New repository secret**:
+## 🔴 Einziger Blocker: IONOS-FTP-Passwort
+Das Passwort steht nirgendwo auf dem Rechner (Skripte fragen es immer interaktiv ab), und Claude darf Passwörter grundsätzlich nicht selbst in Felder eintragen.
+
+**Bekannt:** Host `home362401740.1and1-data.host` · User `u62702423` (gleicher Webspace wie liar-entertainer)
+
+**Du musst einmalig 4 Secrets setzen:**
+https://github.com/ben69mikail/ZAubererLIAR/settings/secrets/actions → „New repository secret":
 
 | Secret | Wert |
 |---|---|
-| `IONOS_FTP_SERVER` | FTP/SFTP-Hostname aus dem IONOS-Kundenkonto |
-| `IONOS_FTP_USER` | FTP-Benutzername |
-| `IONOS_FTP_PASSWORD` | FTP-Passwort |
-| `IONOS_SERVER_DIR` | Zielverzeichnis, z. B. `/` oder `/zauberer/` |
+| `IONOS_FTP_SERVER` | `home362401740.1and1-data.host` |
+| `IONOS_FTP_USER` | `u62702423` |
+| `IONOS_FTP_PASSWORD` | dein FTP-Passwort |
+| `IONOS_SERVER_DIR` | Zielordner, z. B. `/zauberer/` (Empfehlung: NEUEN Ordner nehmen, dann im IONOS-Panel die Domain zauberer-liar.de auf diesen Ordner zeigen lassen — so wird WordPress nicht überschrieben und du kannst sofort zurückschalten) |
 
-Empfehlung aus dem Masterplan: zuerst auf Test-Subdomain (z. B. `neu.zauberer-liar.de`) deployen, erst nach Freigabe auf Hauptdomain umstellen.
+Danach: Actions-Tab → „Deploy auf IONOS" → „Run workflow" (oder mir Bescheid sagen — ich stoße den Deploy an und verifiziere live).
 
-## 2. Google Analytics 4 (Pflicht für Tracking)
-- analytics.google.com → neue Property „zauberer-liar.de" anlegen (gleiches Konto wie liar-entertainer.com)
-- Measurement-ID (`G-…`) kopieren
-- In `site/assets/app.js` Zeile 30 eintragen (oder mir die ID geben — ich trage sie ein und pushe)
+## Nach Live-Gang (mache ich)
+- Live-Check aller Seiten + 301-Redirects
+- GSC: Sitemap-Status prüfen, Indexierung der Kernseiten anstoßen
+- Monatlicher SEO-Loop „Zauberer"/„Kinderzauberer" als geplante Aufgabe
 
-## 3. Web3Forms-Key (Pflicht für Kontaktformular)
-- web3forms.com → kostenlosen Access-Key für info@liar-entertainer.com holen
-- In `site/kontakt.html` (`access_key`) eintragen (oder mir den Key geben)
-
-## 4. Nach Live-Gang
-- Google Search Console: Property `zauberer-liar.de` anlegen, Sitemap `https://zauberer-liar.de/sitemap.xml` einreichen
-- 301-Redirects in `.htaccess` sind vorbereitet — greifen beim Umstellen der Hauptdomain
-- Monatlicher SEO-Loop (Search Console auswerten, Texte „Zauberer"/„Kinderzauberer" nachschärfen) — kann als geplante Aufgabe eingerichtet werden, analog liar-daily-seo-autopilot
-
-## 5. Optional (rechtlich empfohlen)
-- Impressum/Datenschutz/AGB sind Vorlagen — rechtlich prüfen lassen, USt-Angabe ergänzen
+## Optional (rechtlich empfohlen)
+- Impressum/Datenschutz/AGB prüfen lassen, USt-Angabe ergänzen
+- Web3Forms-Key für Kontaktformular (kostenlos, web3forms.com) — bis dahin zeigt das Formular eine Fehlermeldung
