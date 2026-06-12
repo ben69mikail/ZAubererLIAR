@@ -16,8 +16,7 @@ jobs:
       - name: Upload auf IONOS
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
-          protocol: sftp              # IONOS SFTP (Port 22); Secrets heißen IONOS_SFTP_*
-          port: 22
+          protocol: ftps              # Action kann kein SFTP; IONOS nimmt dieselben Zugangsdaten per FTPS (Port 21)
           server: ${{ secrets.IONOS_SFTP_HOST }}
           username: ${{ secrets.IONOS_SFTP_USER }}
           password: ${{ secrets.IONOS_SFTP_PASS }}
