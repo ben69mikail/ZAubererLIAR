@@ -21,7 +21,8 @@ jobs:
           username: ${{ secrets.IONOS_SFTP_USER }}
           password: ${{ secrets.IONOS_SFTP_PASS }}
           local-dir: ./site/          # nur der Website-Ordner wird hochgeladen
-          server-dir: ${{ secrets.IONOS_SFTP_REMOTE }}   # z. B. /zauberer/
+          # Zielordner; fehlender End-Slash wird automatisch ergänzt
+          server-dir: ${{ endsWith(secrets.IONOS_SFTP_REMOTE, '/') && secrets.IONOS_SFTP_REMOTE || format('{0}/', secrets.IONOS_SFTP_REMOTE) }}
           dangerous-clean-slate: false
           exclude: |
             **/.git*
