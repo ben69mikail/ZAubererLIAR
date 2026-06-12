@@ -1,0 +1,47 @@
+# === Zauberer LIAR – Apache-Konfiguration (IONOS) ===
+
+# HTTPS + www → non-www erzwingen
+RewriteEngine On
+RewriteCond %{HTTPS} off [OR]
+RewriteCond %{HTTP_HOST} ^www\. [NC]
+RewriteCond %{HTTP_HOST} ^(?:www\.)?(.+)$ [NC]
+RewriteRule ^ https://%1%{REQUEST_URI} [L,R=301]
+
+# === 301-Weiterleitungen: alte WordPress-URLs → neue Struktur ===
+Redirect 301 /close-up-aus-frankreich/ /close-up-zauberer.html
+Redirect 301 /close-up-aus-frankreich/tisch-zauberer/ /close-up-zauberer.html
+Redirect 301 /close-up-aus-frankreich/walk-act-zauberer/ /close-up-zauberer.html
+Redirect 301 /stand-up-aus-frankreich/ /buehnenshow.html
+Redirect 301 /stand-up-aus-frankreich/zaubershow-nrw/ /buehnenshow.html
+Redirect 301 /stand-up-aus-frankreich/kinderzauberer/ /kinderzauberer.html
+Redirect 301 /referenzen-zauberer-zauberkunstler-nrw/ /index.html
+Redirect 301 /datenschutzerklaerung/ /datenschutz.html
+Redirect 301 /kontakt/impressum/ /impressum.html
+Redirect 301 /kontakt/agbs/ /agb.html
+
+# === Performance: Caching ===
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresByType text/css "access plus 1 month"
+  ExpiresByType application/javascript "access plus 1 month"
+  ExpiresByType image/webp "access plus 1 year"
+  ExpiresByType image/jpeg "access plus 1 year"
+  ExpiresByType image/png "access plus 1 year"
+  ExpiresByType image/svg+xml "access plus 1 year"
+  ExpiresByType text/html "access plus 1 day"
+</IfModule>
+
+# === Performance: GZIP-Komprimierung ===
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/css application/javascript image/svg+xml text/xml
+</IfModule>
+
+# === Sicherheit ===
+<IfModule mod_headers.c>
+  Header set X-Content-Type-Options "nosniff"
+  Header set X-Frame-Options "SAMEORIGIN"
+  Header set Referrer-Policy "strict-origin-when-cross-origin"
+</IfModule>
+
+# 404-Seite (optional, sobald 404.html existiert)
+# ErrorDocument 404 /404.html

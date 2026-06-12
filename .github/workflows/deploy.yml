@@ -1,0 +1,29 @@
+name: Deploy auf IONOS
+
+# Bei jedem Push auf main wird der Ordner site/ per FTPS/SFTP auf den IONOS-Webspace hochgeladen.
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Upload auf IONOS
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          protocol: ftps              # IONOS unterstützt FTPS; bei SFTP auf "sftp" + port 22 ändern
+          server: ${{ secrets.IONOS_FTP_SERVER }}
+          username: ${{ secrets.IONOS_FTP_USER }}
+          password: ${{ secrets.IONOS_FTP_PASSWORD }}
+          local-dir: ./site/          # nur der Website-Ordner wird hochgeladen
+          server-dir: ${{ secrets.IONOS_SERVER_DIR }}   # z. B. / oder /zauberer-liar/
+          dangerous-clean-slate: false
+          exclude: |
+            **/.git*
+            **/.git*/**
+            **/README.md
