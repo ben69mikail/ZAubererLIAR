@@ -27,7 +27,7 @@ if (burger && mnav) {
 
 // === DSGVO Cookie Consent + Google Analytics (consent-gated) ===
 // GA4 lädt NUR nach ausdrücklicher Zustimmung (Opt-in).
-const GA_ID = 'G-XXXXXXXXXX'; // TODO: echte GA4-Measurement-ID eintragen
+const GA_ID = 'G-ERW1J6LF5D'; // GA4-Property "zauberer-liar.de", Stream 15062943714
 const CONSENT_KEY = 'liar_consent_v1';
 
 function loadAnalytics() {
