@@ -22,4 +22,4 @@ jobs:
           port: 22
           local_path: ./site/*
           remote_path: ${{ secrets.IONOS_SFTP_REMOTE }}
-          sftp_only: true
+          # sftp_only entfernt: Action legt Zielordner per SSH an, falls er fehlt
