@@ -13,18 +13,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Upload auf IONOS
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+      - name: Upload auf IONOS (SFTP)
+        uses: wlixcc/SFTP-Deploy-Action@v1.2.5
         with:
-          protocol: ftps              # Action kann kein SFTP; IONOS nimmt dieselben Zugangsdaten per FTPS (Port 21)
-          server: ${{ secrets.IONOS_SFTP_HOST }}
+          server: ${{ secrets.IONOS_SFTP_HOST }}     # IONOS SFTP-Host (home….1and1-data.host)
           username: ${{ secrets.IONOS_SFTP_USER }}
           password: ${{ secrets.IONOS_SFTP_PASS }}
-          local-dir: ./site/          # nur der Website-Ordner wird hochgeladen
-          # Zielordner; fehlender End-Slash wird automatisch ergänzt
-          server-dir: ${{ endsWith(secrets.IONOS_SFTP_REMOTE, '/') && secrets.IONOS_SFTP_REMOTE || format('{0}/', secrets.IONOS_SFTP_REMOTE) }}
-          dangerous-clean-slate: false
-          exclude: |
-            **/.git*
-            **/.git*/**
-            **/README.md
+          port: 22
+          local_path: ./site/*
+          remote_path: ${{ secrets.IONOS_SFTP_REMOTE }}
+          sftp_only: true
