@@ -23,3 +23,13 @@ jobs:
           local_path: ./site/*
           remote_path: zaubererNEU            # Domain-Zielverzeichnis von zauberer-liar.de
           # sftp_only entfernt: Action legt Zielordner per SSH an, falls er fehlt
+
+      - name: Upload .htaccess (Glob '*' ueberspringt Dotfiles)
+        uses: wlixcc/SFTP-Deploy-Action@v1.2.5
+        with:
+          server: ${{ secrets.IONOS_SFTP_HOST }}
+          username: ${{ secrets.IONOS_SFTP_USER }}
+          password: ${{ secrets.IONOS_SFTP_PASS }}
+          port: 22
+          local_path: ./site/.htaccess
+          remote_path: zaubererNEU
