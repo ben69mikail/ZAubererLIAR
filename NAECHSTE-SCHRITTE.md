@@ -1,34 +1,29 @@
-# Status & letzter Schritt vor Live-Gang (Stand 12.06.2026, nachmittags)
+# Status zauberer-liar.de — LIVE 🎉 (Stand 12.06.2026)
 
-## ✅ Erledigt
-- **Design v2 „Salon Parisien"** live im Repo: helles französisches Editorial (Elfenbein/Tinte/Champagner-Gold), Playfair Display + Inter, dunkle Bühnen-Panels für Hero/Finale, warme kinderfreundliche Kinderzauberer-Seite (SVG-Icons statt Emojis)
-- **GitHub**: https://github.com/ben69mikail/ZAubererLIAR — alle Commits gepusht
-- **GA4**: neue Property „zauberer-liar.de" (Konto wie liar-entertainer.com), Web-Stream `https://www.zauberer-liar.de`, Stream-ID 15062943714, **Mess-ID `G-ERW1J6LF5D`** — bereits in `site/assets/app.js` eingetragen (lädt nur nach Cookie-Zustimmung)
-- **GSC**: Domain-Property zauberer-liar.de existierte bereits (gleiches Konto). Neue Sitemap `https://zauberer-liar.de/sitemap.xml` eingereicht — Status wird „Erfolgreich", sobald die neue Seite deployed ist
-- Hinweis: Auf der alten WordPress-Seite läuft noch ein Site-Kit-Tag (G-08W3WX75ST) — verschwindet automatisch mit dem Relaunch
+## ✅ Fertig & live
+- **Neue Seite live** unter https://www.zauberer-liar.de (Design v2 „Salon Parisien")
+- **Deploy-Pipeline** läuft: jeder Push auf `main` → GitHub Actions → SFTP nach IONOS-Ordner `zaubererNEU`
+- **Domain** zeigt auf Ordner `zaubererNEU`; altes WordPress liegt unangetastet im alten Ordner (jederzeit zurückschaltbar)
+- **.htaccess aktiv**: HTTPS + non-www erzwungen, 301-Redirects alte→neue URLs, Caching, GZIP, Security-Header
+- **GA4** `G-ERW1J6LF5D` eingebaut (lädt nur nach Cookie-Zustimmung)
+- **GSC** Property zauberer-liar.de + Sitemap eingereicht
+- **URL-Konsistenz** Canonical/Sitemap/Schema = echte `.html`-URLs (kein 404-Mismatch)
+- 9 Seiten geprüft, 301-Redirect getestet (`/datenschutzerklaerung/` → `/datenschutz.html` ✅)
 
-## 🔴 Einziger Blocker: IONOS-FTP-Passwort
-Das Passwort steht nirgendwo auf dem Rechner (Skripte fragen es immer interaktiv ab), und Claude darf Passwörter grundsätzlich nicht selbst in Felder eintragen.
+## 🔴 Noch offen — brauche ich von dir
 
-**Bekannt:** Host `home362401740.1and1-data.host` · User `u62702423` (gleicher Webspace wie liar-entertainer)
+### 1. Web3Forms-Key (Kontaktformular)
+Ohne Key zeigt das Kontaktformular einen Fehler.
+- Kostenlos auf web3forms.com mit info@liar-entertainer.com einen Access-Key holen
+- Mir den Key geben → ich trage ihn in `site/kontakt.html` ein und deploye
 
-**Du musst einmalig 4 Secrets setzen:**
-https://github.com/ben69mikail/ZAubererLIAR/settings/secrets/actions → „New repository secret":
+### 2. 301-Redirect-Mapping prüfen (SEO-Ranking-Erhalt)
+Die `.htaccess` leitet alte WordPress-URLs auf die neuen Seiten um. Die hinterlegten alten Pfade
+(z. B. `/close-up-aus-frankreich/`) stammen aus einer früheren Annahme. Falls Google andere alte
+URLs indexiert hat (in GSC unter „Seiten" sichtbar), gib mir die Liste → ich ergänze die Redirects,
+damit kein Ranking verloren geht.
 
-| Secret | Wert |
-|---|---|
-| `IONOS_FTP_SERVER` | `home362401740.1and1-data.host` |
-| `IONOS_FTP_USER` | `u62702423` |
-| `IONOS_FTP_PASSWORD` | dein FTP-Passwort |
-| `IONOS_SERVER_DIR` | Zielordner, z. B. `/zauberer/` (Empfehlung: NEUEN Ordner nehmen, dann im IONOS-Panel die Domain zauberer-liar.de auf diesen Ordner zeigen lassen — so wird WordPress nicht überschrieben und du kannst sofort zurückschalten) |
-
-Danach: Actions-Tab → „Deploy auf IONOS" → „Run workflow" (oder mir Bescheid sagen — ich stoße den Deploy an und verifiziere live).
-
-## Nach Live-Gang (mache ich)
-- Live-Check aller Seiten + 301-Redirects
-- GSC: Sitemap-Status prüfen, Indexierung der Kernseiten anstoßen
-- Monatlicher SEO-Loop „Zauberer"/„Kinderzauberer" als geplante Aufgabe
-
-## Optional (rechtlich empfohlen)
-- Impressum/Datenschutz/AGB prüfen lassen, USt-Angabe ergänzen
-- Web3Forms-Key für Kontaktformular (kostenlos, web3forms.com) — bis dahin zeigt das Formular eine Fehlermeldung
+## Nächste SEO-Schritte (mache ich auf Zuruf)
+- GSC: Indexierung der Kernseiten anstoßen, Sitemap-Status nach 1–2 Tagen prüfen
+- Monatlicher SEO-Loop „Zauberer"/„Kinderzauberer" als geplante Aufgabe (analog liar-daily-seo-autopilot)
+- Optional: Impressum/Datenschutz/AGB rechtlich prüfen lassen, USt-Angabe ergänzen
