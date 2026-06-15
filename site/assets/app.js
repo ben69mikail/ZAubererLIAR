@@ -12,6 +12,7 @@ document.documentElement.classList.add('js-anim');
   for (let i = 0; i < N; i++) {
     const s = document.createElement('span');
     s.className = 'star';
+    if (Math.random() < 0.18) s.classList.add('c' + (1 + Math.floor(Math.random() * 4)));
     const sz = Math.random() < 0.85 ? (1 + Math.random() * 1.6) : (2.2 + Math.random() * 1.8);
     s.style.width = s.style.height = sz.toFixed(1) + 'px';
     s.style.left = (Math.random() * 100).toFixed(2) + '%';
@@ -81,15 +82,28 @@ if (burger && mnav) {
 
 // --- Galerie-Filter ---
 const filterBtns = document.querySelectorAll('.gal-filter button');
+function applyFilter(cat) {
+  let btn = [...filterBtns].find(b => b.dataset.cat === cat);
+  if (!btn) return false;
+  filterBtns.forEach(x => x.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.masonry .tile').forEach(t => {
+    t.classList.toggle('hide', cat !== 'all' && t.dataset.cat !== cat);
+  });
+  return true;
+}
 if (filterBtns.length) {
-  filterBtns.forEach(b => b.addEventListener('click', () => {
-    filterBtns.forEach(x => x.classList.remove('active'));
-    b.classList.add('active');
-    const cat = b.dataset.cat;
-    document.querySelectorAll('.masonry .tile').forEach(t => {
-      t.classList.toggle('hide', cat !== 'all' && t.dataset.cat !== cat);
-    });
-  }));
+  filterBtns.forEach(b => b.addEventListener('click', () => applyFilter(b.dataset.cat)));
+  // Submenü-Anker (#musical, #firmenfeier …) aktiviert direkt den passenden Filter
+  const fromHash = () => {
+    const h = location.hash.replace('#', '');
+    if (h && applyFilter(h)) {
+      const g = document.querySelector('.gal-filter');
+      if (g) g.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  };
+  fromHash();
+  addEventListener('hashchange', fromHash);
 }
 
 // --- Lightbox ---
