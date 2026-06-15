@@ -12,7 +12,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/style.css?v=3">
+<link rel="stylesheet" href="assets/style.css?v=4">
 </head>
 <body>
 <div id="stars" aria-hidden="true"></div>
@@ -25,6 +25,8 @@
       <ul class="submenu"><li><a href="buehnenshow.html">Zaubershow für Erwachsene</a></li><li><a href="kinderzauberer.html">Kinderzauberer</a></li></ul></li>
     <li><a href="fotogalerie.html">Fotogalerie <span class="caret"></span></a>
       <ul class="submenu"><li><a href="fotogalerie.html#firmenfeier">Firmenfeier</a></li><li><a href="fotogalerie.html#galadinner">Galadinner</a></li><li><a href="fotogalerie.html#jungge">Junggesellenabschied</a></li><li><a href="fotogalerie.html#geburtstag">Private Feier</a></li><li><a href="fotogalerie.html#kinder">Kinderzauberei</a></li></ul></li>
+    <li><a href="videogalerie.html">Videogalerie <span class="caret"></span></a>
+      <ul class="submenu"><li><a href="videogalerie.html#musical">Musical-Zirkus</a></li><li><a href="videogalerie.html#standup">Stand-up</a></li><li><a href="videogalerie.html#kinder">Kinderzauberer</a></li></ul></li>
     <li><a href="referenzen.html">Referenzen <span class="caret"></span></a>
       <ul class="submenu"><li><a href="referenzen.html#bewertungen">Bewertungen</a></li><li><a href="referenzen.html#vita">Vita / Über mich</a></li></ul></li>
     <li><a href="kontakt.html" class="cta-mini"><span>Anfragen</span></a></li>
@@ -36,6 +38,7 @@
   <a href="buehnenshow.html">Bühnenshow</a>
   <a href="kinderzauberer.html" class="sub">› Kinderzauberer</a>
   <a href="fotogalerie.html">Fotogalerie</a>
+  <a href="videogalerie.html">Videogalerie</a>
   <a href="referenzen.html">Referenzen</a>
   <a href="kontakt.html">Anfragen</a>
 </div>
@@ -61,9 +64,9 @@
 
     <div class="sec-head center reveal d1" style="margin-bottom:36px"><span class="eyebrow">Anfrageformular</span><h2>Erzählen Sie mir von Ihrem Event</h2></div>
 
-    <!-- Web3Forms: access_key eintragen (kostenlos auf web3forms.com) -->
     <form class="form-grid reveal d2" action="https://api.web3forms.com/submit" method="POST">
-      <input type="hidden" name="access_key" value="DEIN-WEB3FORMS-KEY">
+      <input type="hidden" name="access_key" value="532d66cd-45c1-4061-98cf-2f6fa596654a">
+      <input type="hidden" name="redirect" value="https://zauberer-liar.de/danke.html">
       <input type="hidden" name="subject" value="Neue Anfrage über zauberer-liar.de">
       <input type="checkbox" name="botcheck" style="display:none">
       <div class="field"><label for="name">Name *</label><input id="name" name="name" type="text" required autocomplete="name"></div>
@@ -116,6 +119,6 @@
   <div class="cookie-actions"><button class="btn btn-gold" onclick="__liarConsent.accept()">Akzeptieren</button><button class="btn btn-text" onclick="__liarConsent.decline()">Nur notwendige</button></div>
 </div>
 
-<script src="assets/app.js?v=3"></script>
+<script src="assets/app.js?v=4"></script>
 </body>
 </html>

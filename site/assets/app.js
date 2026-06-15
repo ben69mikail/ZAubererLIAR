@@ -122,6 +122,17 @@ if (filterBtns.length) {
   });
 })();
 
+// --- Videogalerie: YouTube erst bei Klick laden (DSGVO, kein Request vorher) ---
+document.querySelectorAll('.video-frame[data-yt]').forEach(f => f.addEventListener('click', () => {
+  const id = f.dataset.yt;
+  const ifr = document.createElement('iframe');
+  ifr.src = 'https://www.youtube-nocookie.com/embed/' + id + '?autoplay=1&rel=0';
+  ifr.allow = 'accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture';
+  ifr.allowFullscreen = true;
+  ifr.title = f.getAttribute('aria-label') || 'Video';
+  f.replaceWith(ifr);
+}));
+
 // === DSGVO Cookie Consent + Google Analytics (consent-gated) ===
 const GA_ID = 'G-ERW1J6LF5D'; // GA4-Property "zauberer-liar.de", Stream 15062943714
 const CONSENT_KEY = 'liar_consent_v1';
