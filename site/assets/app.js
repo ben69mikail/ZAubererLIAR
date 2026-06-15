@@ -1,37 +1,133 @@
-// === Zauberer LIAR – shared interactions ===
+// === Zauberer LIAR – shared interactions (Design v3 „Nuit Magique") ===
 
-// Arm reveal animations only when JS runs (content stays visible otherwise)
 document.documentElement.classList.add('js-anim');
 
-// Topbar shrink on scroll
+// --- Sternenhimmel erzeugen ---
+(function stars(){
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const host = document.getElementById('stars');
+  if (!host) return;
+  const N = Math.min(140, Math.round(innerWidth * innerHeight / 14000));
+  const frag = document.createDocumentFragment();
+  for (let i = 0; i < N; i++) {
+    const s = document.createElement('span');
+    s.className = 'star';
+    const sz = Math.random() < 0.85 ? (1 + Math.random() * 1.6) : (2.2 + Math.random() * 1.8);
+    s.style.width = s.style.height = sz.toFixed(1) + 'px';
+    s.style.left = (Math.random() * 100).toFixed(2) + '%';
+    s.style.top = (Math.random() * 100).toFixed(2) + '%';
+    s.style.setProperty('--dur', (3 + Math.random() * 5).toFixed(1) + 's');
+    s.style.setProperty('--dl', (Math.random() * 6).toFixed(1) + 's');
+    s.style.setProperty('--mx', (0.4 + Math.random() * 0.6).toFixed(2));
+    frag.appendChild(s);
+  }
+  host.appendChild(frag);
+  // gelegentliche Sternschnuppe
+  function shoot(){
+    const sh = document.createElement('div');
+    sh.className = 'shoot';
+    const x = 10 + Math.random() * 70, y = Math.random() * 30;
+    sh.style.left = x + 'vw'; sh.style.top = y + 'vh';
+    document.body.appendChild(sh);
+    sh.animate([
+      { transform: 'translate(0,0) scaleX(1)', opacity: 0 },
+      { opacity: 1, offset: .15 },
+      { transform: 'translate(220px,180px) scaleX(14)', opacity: 0 }
+    ], { duration: 900, easing: 'ease-out' }).onfinish = () => sh.remove();
+    setTimeout(shoot, 6000 + Math.random() * 9000);
+  }
+  setTimeout(shoot, 3500);
+})();
+
+// --- Topbar shrink ---
 const tb = document.getElementById('topbar');
 if (tb) addEventListener('scroll', () => tb.classList.toggle('scrolled', scrollY > 40));
 
-// Reveal on scroll
+// --- Reveal on scroll ---
 const io = new IntersectionObserver((es) => es.forEach(e => {
   if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
 }), { threshold: .12 });
 document.querySelectorAll('.reveal:not(.in)').forEach(el => io.observe(el));
 
-// FAQ accordion
+// --- Zähler hochzählen ---
+const counters = document.querySelectorAll('[data-count]');
+if (counters.length) {
+  const cio = new IntersectionObserver((es) => es.forEach(e => {
+    if (!e.isIntersecting) return;
+    cio.unobserve(e.target);
+    const el = e.target, target = +el.dataset.count, suf = el.dataset.suffix || '';
+    const dur = 1600, t0 = performance.now();
+    (function tick(now){
+      const p = Math.min(1, (now - t0) / dur);
+      const eased = 1 - Math.pow(1 - p, 3);
+      el.textContent = Math.round(target * eased).toLocaleString('de-DE') + suf;
+      if (p < 1) requestAnimationFrame(tick);
+    })(t0);
+  }), { threshold: .5 });
+  counters.forEach(c => cio.observe(c));
+}
+
+// --- FAQ ---
 document.querySelectorAll('.faq-item').forEach(it =>
   it.addEventListener('click', () => it.classList.toggle('open')));
 
-// Mobile nav
+// --- Mobile nav ---
 const burger = document.getElementById('burger');
 const mnav = document.getElementById('mobile-nav');
 if (burger && mnav) {
-  burger.addEventListener('click', () => mnav.classList.toggle('open'));
-  mnav.querySelectorAll('a').forEach(a => a.addEventListener('click', () => mnav.classList.remove('open')));
+  burger.addEventListener('click', () => { mnav.classList.toggle('open'); document.body.style.overflow = mnav.classList.contains('open') ? 'hidden' : ''; });
+  mnav.querySelectorAll('a').forEach(a => a.addEventListener('click', () => { mnav.classList.remove('open'); document.body.style.overflow = ''; }));
 }
 
+// --- Galerie-Filter ---
+const filterBtns = document.querySelectorAll('.gal-filter button');
+if (filterBtns.length) {
+  filterBtns.forEach(b => b.addEventListener('click', () => {
+    filterBtns.forEach(x => x.classList.remove('active'));
+    b.classList.add('active');
+    const cat = b.dataset.cat;
+    document.querySelectorAll('.masonry .tile').forEach(t => {
+      t.classList.toggle('hide', cat !== 'all' && t.dataset.cat !== cat);
+    });
+  }));
+}
+
+// --- Lightbox ---
+(function lightbox(){
+  const tiles = [...document.querySelectorAll('.masonry .tile img, [data-lightbox]')];
+  if (!tiles.length) return;
+  const lb = document.createElement('div');
+  lb.className = 'lightbox';
+  lb.innerHTML = '<div class="lb-close" aria-label="Schließen">&times;</div>'
+    + '<div class="lb-nav lb-prev" aria-label="Zurück">&#8249;</div>'
+    + '<div class="lb-nav lb-next" aria-label="Weiter">&#8250;</div>'
+    + '<img alt="">';
+  document.body.appendChild(lb);
+  const img = lb.querySelector('img');
+  let cur = 0;
+  const srcs = tiles.map(t => t.dataset.full || t.src);
+  const alts = tiles.map(t => t.alt || '');
+  function show(i){ cur = (i + srcs.length) % srcs.length; img.src = srcs[cur]; img.alt = alts[cur]; }
+  tiles.forEach((t, i) => t.addEventListener('click', () => { show(i); lb.classList.add('open'); document.body.style.overflow = 'hidden'; }));
+  function close(){ lb.classList.remove('open'); document.body.style.overflow = ''; }
+  lb.querySelector('.lb-close').addEventListener('click', close);
+  lb.querySelector('.lb-prev').addEventListener('click', e => { e.stopPropagation(); show(cur - 1); });
+  lb.querySelector('.lb-next').addEventListener('click', e => { e.stopPropagation(); show(cur + 1); });
+  lb.addEventListener('click', e => { if (e.target === lb) close(); });
+  addEventListener('keydown', e => {
+    if (!lb.classList.contains('open')) return;
+    if (e.key === 'Escape') close();
+    if (e.key === 'ArrowLeft') show(cur - 1);
+    if (e.key === 'ArrowRight') show(cur + 1);
+  });
+})();
+
 // === DSGVO Cookie Consent + Google Analytics (consent-gated) ===
-// GA4 lädt NUR nach ausdrücklicher Zustimmung (Opt-in).
 const GA_ID = 'G-ERW1J6LF5D'; // GA4-Property "zauberer-liar.de", Stream 15062943714
 const CONSENT_KEY = 'liar_consent_v1';
 
 function loadAnalytics() {
-  if (!GA_ID || GA_ID === 'G-XXXXXXXXXX') return; // erst aktiv, wenn ID gesetzt
+  if (!GA_ID || GA_ID === 'G-XXXXXXXXXX') return;
   const s = document.createElement('script');
   s.async = true;
   s.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA_ID;
@@ -42,14 +138,12 @@ function loadAnalytics() {
   gtag('js', new Date());
   gtag('config', GA_ID, { anonymize_ip: true });
 }
-
 function setConsent(val) {
   try { localStorage.setItem(CONSENT_KEY, val); } catch (e) {}
   const c = document.getElementById('cookie');
   if (c) c.classList.remove('show');
   if (val === 'accepted') loadAnalytics();
 }
-
 (function initConsent() {
   const banner = document.getElementById('cookie');
   let stored = null;
@@ -58,5 +152,4 @@ function setConsent(val) {
   if (stored === 'declined') { return; }
   if (banner) setTimeout(() => banner.classList.add('show'), 900);
 })();
-
 window.__liarConsent = { accept: () => setConsent('accepted'), decline: () => setConsent('declined') };
