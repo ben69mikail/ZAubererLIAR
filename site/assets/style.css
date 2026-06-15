@@ -103,6 +103,20 @@ p{text-wrap:pretty}
   background:radial-gradient(130% 100% at 78% 6%,rgba(201,161,78,.20),transparent 52%),
    radial-gradient(90% 90% at 6% 100%,rgba(120,90,180,.12),transparent 55%),
    linear-gradient(165deg,#0a0c14 0%,#11141f 55%,#0a0c14 100%)}
+/* Bewegte Flyer-Farb-Aurora (Dynamik im Header) */
+.hero-bg::before{content:"";position:absolute;inset:-25%;z-index:0;pointer-events:none;
+  background:
+   radial-gradient(38% 48% at 22% 30%,rgba(224,81,138,.30),transparent 62%),
+   radial-gradient(42% 52% at 80% 24%,rgba(84,168,230,.26),transparent 62%),
+   radial-gradient(46% 50% at 62% 82%,rgba(165,116,216,.26),transparent 62%),
+   radial-gradient(40% 46% at 32% 78%,rgba(95,191,122,.20),transparent 62%),
+   radial-gradient(36% 40% at 50% 50%,rgba(240,215,155,.18),transparent 60%);
+  filter:blur(46px) saturate(1.35);mix-blend-mode:screen;
+  animation:aurora 22s ease-in-out infinite alternate}
+@keyframes aurora{
+  0%{transform:translate3d(-3%,-2%,0) scale(1.05) rotate(0deg)}
+  50%{transform:translate3d(3%,3%,0) scale(1.16) rotate(5deg)}
+  100%{transform:translate3d(5%,-3%,0) scale(1.09) rotate(-4deg)}}
 .hero-glow{position:absolute;width:600px;height:600px;border-radius:50%;z-index:0;right:-80px;top:42%;transform:translateY(-50%);
   background:radial-gradient(circle,rgba(240,215,155,.16),transparent 68%);filter:blur(40px);animation:breathe 9s ease-in-out infinite}
 @keyframes breathe{0%,100%{transform:translateY(-52%) scale(1)}50%{transform:translateY(-46%) scale(1.08)}}
@@ -121,7 +135,7 @@ p{text-wrap:pretty}
 .hero-frame::before{content:"";position:absolute;inset:0;border:1px solid var(--line-bright);border-radius:4px;background:linear-gradient(160deg,rgba(240,215,155,.07),transparent 40%)}
 .hero-frame::after{content:"";position:absolute;top:-1px;left:24px;right:24px;height:1px;background:linear-gradient(90deg,transparent,var(--or-bright),transparent)}
 .hero-portrait{aspect-ratio:3/4;border-radius:3px;overflow:hidden;position:relative;background:#11141f;box-shadow:0 50px 100px -40px rgba(0,0,0,.85)}
-.hero-portrait img{width:100%;height:100%;object-fit:cover;animation:kenburns 18s ease-in-out infinite alternate}
+.hero-portrait img{width:100%;height:100%;object-fit:cover;object-position:24% center;animation:kenburns 18s ease-in-out infinite alternate}
 @keyframes kenburns{0%{transform:scale(1) translate(0,0)}100%{transform:scale(1.12) translate(-2%,-2%)}}
 .hero-portrait::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 55%,rgba(10,12,20,.6))}
 .hero-badge{position:absolute;left:-24px;bottom:42px;background:rgba(20,24,38,.95);backdrop-filter:blur(8px);
@@ -410,6 +424,18 @@ footer .brand{font-size:1.5rem;margin-bottom:16px}
 .masonry .tile img[src*="clown-und-kinderzauberer-in-essen-4"]{object-position:center top}
 /* Kindershow-Intro: Textspalte breiter, damit Text voll lesbar */
 .split.text-wide{grid-template-columns:1.35fr .85fr}
+/* Kindershow-Intro v2: Bild breiter + komplett sichtbar (Flyer-Text lesbar) */
+.split.media-wide{grid-template-columns:.92fr 1.08fr;gap:48px}
+.media-frame.full img{aspect-ratio:auto;height:auto;object-fit:contain;background:#0d101a}
+/* Globale, dezent bewegte Farb-Aurora im dunklen Hintergrund */
+body::before{content:"";position:fixed;inset:-10%;z-index:0;pointer-events:none;
+  background:
+   radial-gradient(55% 48% at 14% 18%,rgba(224,81,138,.08),transparent 60%),
+   radial-gradient(52% 50% at 86% 68%,rgba(84,168,230,.07),transparent 60%),
+   radial-gradient(50% 52% at 50% 102%,rgba(165,116,216,.07),transparent 56%);
+  filter:blur(30px);animation:auroraSlow 38s ease-in-out infinite alternate}
+@keyframes auroraSlow{0%{transform:translate3d(-2.5%,-2%,0) scale(1.04)}100%{transform:translate3d(3.5%,2.5%,0) scale(1.12)}}
+@media(prefers-reduced-motion:reduce){.hero-bg::before,body::before{animation:none}}
 /* Preis-Pakete (Kindergeburtstag) */
 .pkgs{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;align-items:stretch}
 .pkg{position:relative;display:flex;flex-direction:column;background:linear-gradient(160deg,rgba(27,32,48,.72),rgba(20,24,38,.55));backdrop-filter:blur(14px) saturate(1.2);-webkit-backdrop-filter:blur(14px) saturate(1.2);border:1px solid var(--line);border-radius:12px;padding:34px 28px 30px;transition:.5s var(--ease)}
