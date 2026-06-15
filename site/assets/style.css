@@ -112,11 +112,15 @@ p{text-wrap:pretty}
    radial-gradient(40% 46% at 32% 78%,rgba(95,191,122,.20),transparent 62%),
    radial-gradient(36% 40% at 50% 50%,rgba(240,215,155,.18),transparent 60%);
   filter:blur(46px) saturate(1.35);mix-blend-mode:screen;
-  animation:aurora 22s ease-in-out infinite alternate}
+  animation:aurora 22s ease-in-out infinite alternate, auroraHue 26s ease-in-out infinite}
 @keyframes aurora{
   0%{transform:translate3d(-3%,-2%,0) scale(1.05) rotate(0deg)}
   50%{transform:translate3d(3%,3%,0) scale(1.16) rotate(5deg)}
   100%{transform:translate3d(5%,-3%,0) scale(1.09) rotate(-4deg)}}
+/* sanfter Farb-Fade (Hue-Shift + Atmen) */
+@keyframes auroraHue{
+  0%,100%{filter:blur(46px) saturate(1.3) hue-rotate(0deg);opacity:.82}
+  50%{filter:blur(54px) saturate(1.55) hue-rotate(26deg);opacity:1}}
 .hero-glow{position:absolute;width:600px;height:600px;border-radius:50%;z-index:0;right:-80px;top:42%;transform:translateY(-50%);
   background:radial-gradient(circle,rgba(240,215,155,.16),transparent 68%);filter:blur(40px);animation:breathe 9s ease-in-out infinite}
 @keyframes breathe{0%,100%{transform:translateY(-52%) scale(1)}50%{transform:translateY(-46%) scale(1.08)}}
@@ -433,8 +437,9 @@ body::before{content:"";position:fixed;inset:-10%;z-index:0;pointer-events:none;
    radial-gradient(55% 48% at 14% 18%,rgba(224,81,138,.08),transparent 60%),
    radial-gradient(52% 50% at 86% 68%,rgba(84,168,230,.07),transparent 60%),
    radial-gradient(50% 52% at 50% 102%,rgba(165,116,216,.07),transparent 56%);
-  filter:blur(30px);animation:auroraSlow 38s ease-in-out infinite alternate}
+  filter:blur(30px);animation:auroraSlow 38s ease-in-out infinite alternate, auroraHueSoft 30s ease-in-out infinite}
 @keyframes auroraSlow{0%{transform:translate3d(-2.5%,-2%,0) scale(1.04)}100%{transform:translate3d(3.5%,2.5%,0) scale(1.12)}}
+@keyframes auroraHueSoft{0%,100%{filter:blur(30px) hue-rotate(0deg);opacity:.75}50%{filter:blur(36px) hue-rotate(22deg);opacity:1}}
 @media(prefers-reduced-motion:reduce){.hero-bg::before,body::before{animation:none}}
 /* Preis-Pakete (Kindergeburtstag) */
 .pkgs{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;align-items:stretch}
