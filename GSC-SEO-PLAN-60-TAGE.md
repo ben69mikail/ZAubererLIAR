@@ -24,6 +24,11 @@
 5. **Bericht schreiben** (Was analysiert, was geändert, nächster Schritt).
 6. Nach dem **2026-08-16**: nichts mehr ändern, nur „Plan abgeschlossen" loggen (Task danach deaktivieren).
 
+## Offene Aufgaben / Backlog (in jedem Lauf prüfen, bis erledigt)
+- [ ] **GSC-Sitemap-Recrawl prüfen** (angelegt 2026-06-17). In GSC → Sitemaps wird `sitemap.xml` noch mit **242 „erkannte Seiten"** (alter WordPress-Stand, zuletzt gelesen 15.06.2026) geführt, obwohl die **live ausgelieferte `site/sitemap.xml` nur 24 URLs** enthält (11 Service-Seiten + 13 neue Stadtseiten, Stand 2026-06-18). Aufgabe: bei jedem Lauf in GSC → Sitemaps den Status/„zuletzt gelesen"-Datum und die „erkannte Seiten"-Zahl prüfen. Sobald Google die Sitemap neu eingelesen hat, sollte die Zahl auf ~24 fallen. Falls nach ~7–10 Tagen weiterhin 242: Sitemap in GSC entfernen und `https://zauberer-liar.de/sitemap.xml` neu einreichen (Eingabefeld erwartet nur den Pfad `sitemap.xml`, NICHT die volle URL). Außerdem klären, ob noch ein altes `sitemap_index.xml` (ebenfalls in GSC eingereicht, 242 Seiten) auf nicht mehr existierende WordPress-URLs verweist — ggf. entfernen. **Erledigt-Kriterium:** GSC zeigt für die aktive Sitemap ~24 erkannte Seiten, 0 Fehler.
+- [ ] **Neue Stadtseiten indexieren** (angelegt 2026-06-17). 13 neue `zauberer-STADT.html` sind live; nur `zauberer-essen.html` wurde direkt zur Indexierung beantragt. In Folgeläufen je 1–2 weitere Stadtseiten via GSC URL-Prüfung → „Indexierung beantragen" anstoßen (Reihenfolge nach Impressionspotenzial: gelsenkirchen, oberhausen, recklinghausen, duisburg, herne, herten, marl, dorsten, bottrop, dinslaken, haltern, wesel). Danach Position/CTR der neuen URLs beobachten.
+- [ ] **Wesel-Framing vom Inhaber freigeben lassen.** `zauberer-wesel.html` ist als „erweitertes Einsatzgebiet / auf Anfrage" formuliert (Wesel ist auf liar-entertainer.com NICHT als Auftrittsort belegt). Falls der Inhaber dort regelmäßig auftritt: in reguläres Gebiet umformulieren.
+
 ## Wochenplan (Schwerpunkte)
 - **Woche 1 (Tag 1–7) – Fundament & Crawl:** sitemap.xml prüfen/aktualisieren, robots.txt, alle Seiten in GSC einreichen, Indexierungsstatus je URL prüfen, Canonicals checken. interne Verlinkung Hauptkeywords.
 - **Woche 2 (8–14) – Titles/Descriptions:** je Tag 1–2 Seiten: Title ≤60 Zeichen + Description ≤155 mit Keyword + Ort + CTA. Gegen GSC-CTR priorisieren.
