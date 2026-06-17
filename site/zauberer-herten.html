@@ -18,7 +18,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/style.css?v=11">
+<link rel="stylesheet" href="assets/style.css?v=13">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@graph":[
 {"@type":"Service","serviceType":"Zauberer & Zaubershow","name":"Zauberer Herten","provider":{"@type":["LocalBusiness","EntertainmentBusiness"],"@id":"https://zauberer-liar.de/#business","name":"Zauberer LIAR","telephone":"+491721517578","url":"https://zauberer-liar.de/","address":{"@type":"PostalAddress","streetAddress":"Beethovenstr. 15","postalCode":"45966","addressLocality":"Gladbeck","addressRegion":"NRW","addressCountry":"DE"},"areaServed":"Herten"},"areaServed":"Herten","url":"https://zauberer-liar.de/zauberer-herten.html"},
@@ -28,6 +28,7 @@
 </script>
 </head>
 <body>
+<canvas id="antigravity" aria-hidden="true"></canvas>
 <div id="stars" aria-hidden="true"></div>
 <div class="topbar" id="topbar">
   <a href="index.html" class="brand" aria-label="Zauberer LIAR – Startseite"><img src="assets/img/logo-liar.webp" alt="Zauberer LIAR – Zauberei & Comedy" class="brand-img" width="200" height="113"></a>
@@ -126,6 +127,8 @@
   <p>Wir nutzen Cookies für Statistik (Google Analytics), um die Seite zu verbessern. Analyse-Cookies werden nur mit Ihrer Zustimmung gesetzt. Mehr in der <a href="datenschutz.html">Datenschutzerklärung</a>.</p>
   <div class="cookie-actions"><button class="btn btn-gold" onclick="__liarConsent.accept()">Akzeptieren</button><button class="btn btn-text" onclick="__liarConsent.decline()">Nur notwendige</button></div>
 </div>
-<script src="assets/app.js?v=11"></script>
+<script src="assets/app.js?v=13"></script>
+<script src="assets/three.min.js" defer></script>
+<script src="assets/antigravity.js?v=3" defer></script>
 </body>
 </html>
