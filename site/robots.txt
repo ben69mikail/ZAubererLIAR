@@ -1,7 +1,8 @@
 User-agent: *
 Allow: /
-Disallow: /impressum.html
-Disallow: /datenschutz.html
-Disallow: /agb.html
+
+# Rechtliche Seiten sind per <meta robots="noindex,follow"> aus dem Index
+# genommen. Sie bleiben crawlbar, damit Google den noindex liest und
+# Link-Equity ueber follow weitergegeben wird (kein Disallow noetig).
 
 Sitemap: https://zauberer-liar.de/sitemap.xml
