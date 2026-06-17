@@ -1,0 +1,14 @@
+# Konsistente Line-Endings im gesamten Repo (verhindert Phantom-Diffs).
+# Text-Dateien werden im Repo als LF gespeichert, beim Checkout
+# plattformgerecht normalisiert.
+* text=auto eol=lf
+
+# Binärdateien explizit als binär markieren (kein EOL-Handling, kein Diff).
+*.webp binary
+*.png  binary
+*.jpg  binary
+*.jpeg binary
+*.ico  binary
+*.pdf  binary
+*.woff  binary
+*.woff2 binary
