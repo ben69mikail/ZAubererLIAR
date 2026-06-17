@@ -1,5 +1,9 @@
 # === Zauberer LIAR – Apache-Konfiguration (IONOS) ===
 
+# MultiViews/Verzeichnis-Auflösung abschalten, damit alte /pfad/-URLs
+# nicht VOR den Rewrite-Regeln als 404/Directory abgefangen werden.
+Options -MultiViews
+
 RewriteEngine On
 
 # === HTTPS + www → non-www erzwingen ===
@@ -9,46 +13,43 @@ RewriteCond %{HTTP_HOST} ^(?:www\.)?(.+)$ [NC]
 RewriteRule ^ https://%1%{REQUEST_URI} [L,R=301]
 
 # === 301-Weiterleitungen: alte WordPress-URLs → neue statische Struktur ===
-# WICHTIG: RedirectMatch mit ^...$ Ankern verwenden (NICHT Redirect),
-# sonst hängt Apache den Rest-Pfad an das Ziel an und erzeugt kaputte URLs.
-# Reihenfolge: spezifischere (längere) Pfade ZUERST.
+# Konsequent mod_rewrite (NICHT Redirect/RedirectMatch aus mod_alias),
+# da mod_rewrite früh greift und Trailing-Slash-Verzeichnisse sauber fängt.
+# Reihenfolge: spezifischere (längere/tiefere) Pfade ZUERST.
 
 # --- Close-up / Tischzauberei / Walk-Act ---
-RedirectMatch 301 ^/close-up-aus-frankreich/tisch-zauberer/?$   /tisch-zauberer.html
-RedirectMatch 301 ^/close-up-aus-frankreich/walk-act-zauberer/?$ /walk-act-zauberer.html
-RedirectMatch 301 ^/close-up-aus-frankreich/slider-zauberer/?$  /close-up-zauberer.html
-RedirectMatch 301 ^/close-up-aus-frankreich/?$                  /close-up-zauberer.html
+RewriteRule ^close-up-aus-frankreich/tisch-zauberer/?$    /tisch-zauberer.html    [L,R=301]
+RewriteRule ^close-up-aus-frankreich/walk-act-zauberer/?$ /walk-act-zauberer.html [L,R=301]
+RewriteRule ^close-up-aus-frankreich/slider-zauberer/?$   /close-up-zauberer.html [L,R=301]
+RewriteRule ^close-up-aus-frankreich(/.*)?$               /close-up-zauberer.html [L,R=301]
 
 # --- Stand-up / Kinderzauberer / Zaubershow (tiefste Pfade zuerst) ---
-RedirectMatch 301 ^/stand-up-aus-frankreich/kinderzauberer/.+    /kinderzauberer.html
-RedirectMatch 301 ^/stand-up-aus-frankreich/kinderzauberer/?$    /kinderzauberer.html
-RedirectMatch 301 ^/stand-up-aus-frankreich/zaubershow-nrw/?$    /zaubershow-erwachsene.html
-RedirectMatch 301 ^/stand-up-aus-frankreich/?$                   /buehnenshow.html
+RewriteRule ^stand-up-aus-frankreich/kinderzauberer(/.*)?$ /kinderzauberer.html       [L,R=301]
+RewriteRule ^stand-up-aus-frankreich/zaubershow-nrw/?$     /zaubershow-erwachsene.html [L,R=301]
+RewriteRule ^stand-up-aus-frankreich(/.*)?$                /buehnenshow.html           [L,R=301]
 
 # --- Referenzen ---
-RedirectMatch 301 ^/referenzen-zauberer-zauberkunstler-nrw/.+    /referenzen.html
-RedirectMatch 301 ^/referenzen-zauberer-zauberkunstler-nrw/?$    /referenzen.html
+RewriteRule ^referenzen-zauberer-zauberkunstler-nrw(/.*)?$ /referenzen.html [L,R=301]
 
 # --- Foto-Galerie (alte /galerie/*) ---
-RedirectMatch 301 ^/galerie/.*                                  /fotogalerie.html
+RewriteRule ^galerie(/.*)?$       /fotogalerie.html  [L,R=301]
 
 # --- Video-Galerie (alle Unterseiten) ---
-RedirectMatch 301 ^/videogalerie/.+                             /videogalerie.html
-RedirectMatch 301 ^/videogalerie/?$                             /videogalerie.html
+RewriteRule ^videogalerie(/.*)?$  /videogalerie.html [L,R=301]
 
 # --- Stadt-/Regions-Seiten (vorerst Startseite; später eigene Stadt-Seiten) ---
-RedirectMatch 301 ^/zauberer-gladbeck/?$                        /index.html
-RedirectMatch 301 ^/zauberer-nrw-2/.*                           /index.html
+RewriteRule ^zauberer-gladbeck/?$ /index.html [L,R=301]
+RewriteRule ^zauberer-nrw-2(/.*)?$ /index.html [L,R=301]
 
-# --- Rechtliches ---
-RedirectMatch 301 ^/datenschutzerklaerung/?$                    /datenschutz.html
-RedirectMatch 301 ^/kontakt/impressum/?$                        /impressum.html
-RedirectMatch 301 ^/kontakt/agbs/?$                             /agb.html
-RedirectMatch 301 ^/kontakt/?$                                  /kontakt.html
+# --- Rechtliches (spezifische Unterpfade zuerst) ---
+RewriteRule ^datenschutzerklaerung/?$  /datenschutz.html [L,R=301]
+RewriteRule ^kontakt/impressum/?$      /impressum.html   [L,R=301]
+RewriteRule ^kontakt/agbs/?$           /agb.html         [L,R=301]
+RewriteRule ^kontakt/?$                /kontakt.html     [L,R=301]
 
 # --- Alte WordPress-Query-IDs (?p=NNNN) auf Startseite ---
 RewriteCond %{QUERY_STRING} (^|&)p=[0-9]+
-RewriteRule ^/?$ /index.html? [L,R=301]
+RewriteRule ^$ /index.html? [L,R=301]
 
 # === Performance: Caching ===
 <IfModule mod_expires.c>
