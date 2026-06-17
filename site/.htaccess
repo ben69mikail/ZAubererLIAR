@@ -1,23 +1,54 @@
 # === Zauberer LIAR – Apache-Konfiguration (IONOS) ===
 
-# HTTPS + www → non-www erzwingen
 RewriteEngine On
+
+# === HTTPS + www → non-www erzwingen ===
 RewriteCond %{HTTPS} off [OR]
 RewriteCond %{HTTP_HOST} ^www\. [NC]
 RewriteCond %{HTTP_HOST} ^(?:www\.)?(.+)$ [NC]
 RewriteRule ^ https://%1%{REQUEST_URI} [L,R=301]
 
-# === 301-Weiterleitungen: alte WordPress-URLs → neue Struktur ===
-Redirect 301 /close-up-aus-frankreich/ /close-up-zauberer.html
-Redirect 301 /close-up-aus-frankreich/tisch-zauberer/ /close-up-zauberer.html
-Redirect 301 /close-up-aus-frankreich/walk-act-zauberer/ /close-up-zauberer.html
-Redirect 301 /stand-up-aus-frankreich/ /buehnenshow.html
-Redirect 301 /stand-up-aus-frankreich/zaubershow-nrw/ /buehnenshow.html
-Redirect 301 /stand-up-aus-frankreich/kinderzauberer/ /kinderzauberer.html
-Redirect 301 /referenzen-zauberer-zauberkunstler-nrw/ /index.html
-Redirect 301 /datenschutzerklaerung/ /datenschutz.html
-Redirect 301 /kontakt/impressum/ /impressum.html
-Redirect 301 /kontakt/agbs/ /agb.html
+# === 301-Weiterleitungen: alte WordPress-URLs → neue statische Struktur ===
+# WICHTIG: RedirectMatch mit ^...$ Ankern verwenden (NICHT Redirect),
+# sonst hängt Apache den Rest-Pfad an das Ziel an und erzeugt kaputte URLs.
+# Reihenfolge: spezifischere (längere) Pfade ZUERST.
+
+# --- Close-up / Tischzauberei / Walk-Act ---
+RedirectMatch 301 ^/close-up-aus-frankreich/tisch-zauberer/?$   /tisch-zauberer.html
+RedirectMatch 301 ^/close-up-aus-frankreich/walk-act-zauberer/?$ /walk-act-zauberer.html
+RedirectMatch 301 ^/close-up-aus-frankreich/slider-zauberer/?$  /close-up-zauberer.html
+RedirectMatch 301 ^/close-up-aus-frankreich/?$                  /close-up-zauberer.html
+
+# --- Stand-up / Kinderzauberer / Zaubershow (tiefste Pfade zuerst) ---
+RedirectMatch 301 ^/stand-up-aus-frankreich/kinderzauberer/.+    /kinderzauberer.html
+RedirectMatch 301 ^/stand-up-aus-frankreich/kinderzauberer/?$    /kinderzauberer.html
+RedirectMatch 301 ^/stand-up-aus-frankreich/zaubershow-nrw/?$    /zaubershow-erwachsene.html
+RedirectMatch 301 ^/stand-up-aus-frankreich/?$                   /buehnenshow.html
+
+# --- Referenzen ---
+RedirectMatch 301 ^/referenzen-zauberer-zauberkunstler-nrw/.+    /referenzen.html
+RedirectMatch 301 ^/referenzen-zauberer-zauberkunstler-nrw/?$    /referenzen.html
+
+# --- Foto-Galerie (alte /galerie/*) ---
+RedirectMatch 301 ^/galerie/.*                                  /fotogalerie.html
+
+# --- Video-Galerie (alle Unterseiten) ---
+RedirectMatch 301 ^/videogalerie/.+                             /videogalerie.html
+RedirectMatch 301 ^/videogalerie/?$                             /videogalerie.html
+
+# --- Stadt-/Regions-Seiten (vorerst Startseite; später eigene Stadt-Seiten) ---
+RedirectMatch 301 ^/zauberer-gladbeck/?$                        /index.html
+RedirectMatch 301 ^/zauberer-nrw-2/.*                           /index.html
+
+# --- Rechtliches ---
+RedirectMatch 301 ^/datenschutzerklaerung/?$                    /datenschutz.html
+RedirectMatch 301 ^/kontakt/impressum/?$                        /impressum.html
+RedirectMatch 301 ^/kontakt/agbs/?$                             /agb.html
+RedirectMatch 301 ^/kontakt/?$                                  /kontakt.html
+
+# --- Alte WordPress-Query-IDs (?p=NNNN) auf Startseite ---
+RewriteCond %{QUERY_STRING} (^|&)p=[0-9]+
+RewriteRule ^/?$ /index.html? [L,R=301]
 
 # === Performance: Caching ===
 <IfModule mod_expires.c>
