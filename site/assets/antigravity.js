@@ -30,7 +30,7 @@
   }
 
   var geo = new THREE.SphereGeometry(0.2, 16, 16);
-  var mat = new THREE.MeshBasicMaterial({ color: P.color, transparent: true, opacity: 0.8 });
+  var mat = new THREE.MeshBasicMaterial({ color: P.color, transparent: true, opacity: 0.35 });
   var mesh = new THREE.InstancedMesh(geo, mat, P.count);
   mesh.frustumCulled = false;
   scene.add(mesh);
