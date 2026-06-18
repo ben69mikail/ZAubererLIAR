@@ -41,8 +41,7 @@ RewriteRule ^videogalerie(/.*)?$  /videogalerie.html [L,R=301]
 RewriteRule ^zauberer-nrw-2/zauberer-in-gelsenkirchen/?$      /zauberer-gelsenkirchen.html [L,R=301]
 RewriteRule ^zauberer-nrw-2/zauberer-fur-essen-und-umgebung/?$ /zauberer-essen.html        [L,R=301]
 RewriteRule ^zauberer-nrw-2(/.*)?$ /index.html [L,R=301]
-# gladbeck: eigene Stadtseite folgt nach Freigabe; bis dahin Startseite
-RewriteRule ^zauberer-gladbeck/?$ /index.html [L,R=301]
+RewriteRule ^zauberer-gladbeck/?$ /zauberer-gladbeck.html [L,R=301]
 
 # --- Rechtliches (spezifische Unterpfade zuerst) ---
 RewriteRule ^datenschutzerklaerung/?$  /datenschutz.html [L,R=301]
