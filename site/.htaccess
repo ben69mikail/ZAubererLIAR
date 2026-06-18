@@ -56,12 +56,13 @@ RewriteRule ^$ /index.html? [L,R=301]
 
 # === Extensionless-Routing: /seite → seite.html (intern, ohne Redirect) ===
 # Erlaubt saubere URLs ohne .html (z.B. /zauberer-essen). Greift nur,
-# wenn die .html-Datei wirklich existiert. KEIN Redirect (interne Rewrite),
-# damit es kein Doppel-Indexing gibt; Canonical der Seiten zeigt auf .html.
+# wenn die zugehörige .html-Datei wirklich existiert. KEIN Redirect
+# (interne Rewrite) → kein Doppel-Indexing; Canonical zeigt auf .html.
+# IONOS-robust: REQUEST_FILENAME.html statt DOCUMENT_ROOT.
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteCond %{DOCUMENT_ROOT}/$1.html -f
-RewriteRule ^([^/]+)/?$ /$1.html [L]
+RewriteCond %{REQUEST_FILENAME}\.html -f
+RewriteRule ^(.+?)/?$ /$1.html [L]
 
 # === Catch-all-Fallback: unbekannte alte Pfade → Startseite (statt 404) ===
 # Greift NUR, wenn die angefragte Ressource physisch nicht existiert
@@ -70,7 +71,7 @@ RewriteRule ^([^/]+)/?$ /$1.html [L]
 # Echte Dateien (HTML, /assets/*, sitemap.xml, robots.txt) bleiben unberührt.
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteCond %{DOCUMENT_ROOT}/$0.html !-f
+RewriteCond %{REQUEST_FILENAME}\.html !-f
 RewriteCond %{REQUEST_URI} !^/assets/
 RewriteCond %{REQUEST_URI} !\.(html|xml|txt|webp|jpe?g|png|svg|css|js|ico|woff2?)$ [NC]
 RewriteRule ^.+$ /index.html [L,R=301]
