@@ -35,22 +35,21 @@ Alles außerhalb `site/` (Docs, Workflow) ist **nicht** auf der Live-Site.
 ## 4. Commit/Push-Konventionen (verbindlich)
 - Commit-Identität: `git -c user.name="Michael (LIAR)" -c user.email="benmikail69@googlemail.com"`.
 - **Push immer im Vordergrund** und danach prüfen `git rev-parse HEAD == git rev-parse origin/main`. (Hintergrund-Pushes sind hier schon mehrfach still fehlgeschlagen.) PowerShell-Exit 255 bei `git push` ist nur stderr-Rauschen, kein Fehler, wenn remote aktualisiert.
-- **Cache-Busting:** Bei JEDER Änderung an `style.css` oder `app.js` die Version `?v=N` in ALLEN HTML-Seiten (derzeit 28) hochzählen. Aktuell: `style.css?v=13`, `app.js?v=13`, `antigravity.js?v=3`. HTML selbst ist `no-cache` (per .htaccess), zeigt Änderungen sofort.
+- **Cache-Busting:** Bei JEDER Änderung an `style.css` oder `app.js` die Version `?v=N` in ALLEN HTML-Seiten (derzeit 28) hochzählen. Aktuell: `style.css?v=14`, `app.js?v=14`, `galaxy.js?v=1`. HTML selbst ist `no-cache` (per .htaccess), zeigt Änderungen sofort.
 - Strg+F5 nötig nur bei CSS/JS-Versionssprung.
 
 ## 4a. PFLICHT-Bausteine jeder Seite (auch neue Stadt-/Unterseiten!)
 Jede neu erstellte HTML-Seite MUSS diese Elemente enthalten (sonst fehlt z. B. der Hintergrund-Effekt):
 
-1. **Antigravity-Partikel-Hintergrund** — direkt nach `<body>` (vor `<div id="stars">`):
+1. **Galaxy-Sternenfeld-Hintergrund** (raw WebGL, keine Lib) — direkt nach `<body>` (vor `<div id="stars">`):
    ```html
-   <canvas id="antigravity" aria-hidden="true"></canvas>
+   <canvas id="galaxy" aria-hidden="true"></canvas>
    ```
    und unmittelbar vor `</body>` (NACH `app.js`):
    ```html
-   <script src="assets/three.min.js" defer></script>
-   <script src="assets/antigravity.js?v=3" defer></script>
+   <script src="assets/galaxy.js?v=1" defer></script>
    ```
-   (Das `#antigravity`-CSS liegt zentral in `style.css` — nicht inline einfügen.)
+   (Das `#galaxy`-CSS inkl. Layer-Opacity liegt zentral in `style.css` — nicht inline einfügen. Kein three.js mehr nötig.)
 2. **Topbar identisch** zu den Kernseiten inkl. mobilem Schnellkontakt: `<a class="topbar-tel">` (0172 1517578) + `<a class="topbar-wa">` (wa.me/491721517578) zwischen `</ul>` (Nav) und `<div class="burger">`. Snippet 1:1 aus z. B. `kinderzauberer.html` kopieren.
 3. `style.css?v=13` + `app.js?v=13` im Head/vor `</body>` (aktuelle Version verwenden).
 
