@@ -50,18 +50,20 @@ const io = new IntersectionObserver((es) => es.forEach(e => {
 }), { threshold: .12 });
 document.querySelectorAll('.reveal:not(.in)').forEach(el => io.observe(el));
 
-// --- Zähler hochzählen ---
+// --- Zähler hochzählen (optional data-from = Startwert, damit nie "0 J." sichtbar) ---
 const counters = document.querySelectorAll('[data-count]');
 if (counters.length) {
   const cio = new IntersectionObserver((es) => es.forEach(e => {
     if (!e.isIntersecting) return;
     cio.unobserve(e.target);
     const el = e.target, target = +el.dataset.count, suf = el.dataset.suffix || '';
-    const dur = 1600, t0 = performance.now();
+    const from = +el.dataset.from || 0;
+    const dur = 1200, t0 = performance.now();
+    el.textContent = from.toLocaleString('de-DE') + suf;
     (function tick(now){
       const p = Math.min(1, (now - t0) / dur);
       const eased = 1 - Math.pow(1 - p, 3);
-      el.textContent = Math.round(target * eased).toLocaleString('de-DE') + suf;
+      el.textContent = Math.round(from + (target - from) * eased).toLocaleString('de-DE') + suf;
       if (p < 1) requestAnimationFrame(tick);
     })(t0);
   }), { threshold: .5 });
