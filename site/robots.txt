@@ -5,4 +5,7 @@ Allow: /
 # genommen. Sie bleiben crawlbar, damit Google den noindex liest und
 # Link-Equity ueber follow weitergegeben wird (kein Disallow noetig).
 
+# Strukturierte Kurzfassung der Website-Inhalte fuer KI-Assistenten:
+# https://zauberer-liar.de/llms.txt
+
 Sitemap: https://zauberer-liar.de/sitemap.xml
